@@ -1,0 +1,45 @@
+[[package]]
+name = "toml"
+version = "0.10.2"
+description = "Python Library for Tom's Obvious, Minimal Language"
+category = "main"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
+
+[[package]]
+name = "toml-sort"
+version = "0.20.1"
+description = "Toml sorting library"
+category = "dev"
+optional = false
+python-versions = ">=3.7,<4.0"
+
+[package.dependencies]
+tomlkit = ">=0.8.0"
+
+[[package]]
+name = "tomlkit"
+version = "0.11.6"
+description = "Style preserving TOML library"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[metadata]
+lock-version = "1.1"
+python-versions = "^3.8"
+content-hash = "c2a412ec5ecc6a52c725ddce1b4284b417d40f4a7959ad9cad1aff97f6708eeb"
+
+[metadata.files]
+toml = [
+    {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
+    {file = "toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"},
+]
+toml-sort = [
+    {file = "toml-sort-0.20.1.tar.gz", hash = "sha256:bce9023787c6f15ebbdf22d0b05eab928c047b164f65d393a25c27ac060bd7e1"},
+    {file = "toml_sort-0.20.1-py3-none-any.whl", hash = "sha256:c5f5923969cbbf3b391dea47687733143d342ea438619790ee49d055052fd0f5"},
+]
+tomlkit = [
+    {file = "tomlkit-0.11.6-py3-none-any.whl", hash = "sha256:07de26b0d8cfc18f871aec595fda24d95b08fef89d147caa861939f37230bf4b"},
+    {file = "tomlkit-0.11.6.tar.gz", hash = "sha256:71b952e5721688937fb02cf9d354dbcf0785066149d2855e44531ebdd2b65d73"},
+]

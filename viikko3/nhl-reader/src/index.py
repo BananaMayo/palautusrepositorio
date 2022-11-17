@@ -1,5 +1,7 @@
 import requests
 from player import Player
+def sort(player):
+    return player.assists + player.goals
 
 def main():
     url = "https://studies.cs.helsinki.fi/nhlstats/2021-22/players"
@@ -21,9 +23,10 @@ def main():
     
         players.append(player)
 
+    sorted_players = sorted(players, reverse=True, key=sort)
     print("Pelaajat:")
 
-    for player in players:
+    for player in sorted_players:
         if(player.get_kansallisuus()=="FIN"):
             print(player)
 

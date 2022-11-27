@@ -101,3 +101,52 @@ class TestKauppa(unittest.TestCase):
 
         # varmistetaan, että metodia tilisiirto on kutsuttu
         self.pankki_mock.tilisiirto.assert_called_with("pekka", 42, "12345", "33333-44455", 5)
+
+    def test_ostoksen_nollaaminen(self):
+        # alustetaan kauppa
+        kauppa = Kauppa(self.varasto_mock, self.pankki_mock, self.viitegeneraattori_mock)
+
+        # tehdään ostokset
+        kauppa.aloita_asiointi()
+        kauppa.lisaa_koriin(1)
+        kauppa.lisaa_koriin(3)
+        kauppa.aloita_asiointi()
+        kauppa.lisaa_koriin(1)
+        kauppa.tilimaksu("pekka", "12345")
+
+        # varmistetaan, että metodia tilisiirto on kutsuttu
+        self.pankki_mock.tilisiirto.assert_called_with("pekka", 42, "12345", "33333-44455", 5)
+    
+    def test_ostoksen_viitenumero_pyynto(self):
+        # alustetaan kauppa
+        viitegeneraattori_mock = Mock(wraps=Viitegeneraattori())
+        kauppa = Kauppa(self.varasto_mock, self.pankki_mock, viitegeneraattori_mock)
+
+        # tehdään ostokset
+        kauppa.aloita_asiointi()
+        kauppa.lisaa_koriin(1)
+        kauppa.lisaa_koriin(3)
+        kauppa.tilimaksu("pekka", "12345")
+        self.assertEqual(viitegeneraattori_mock.uusi.call_count, 1)
+
+        kauppa.aloita_asiointi()
+        kauppa.lisaa_koriin(1)
+        kauppa.tilimaksu("pekka", "12345")
+        self.assertEqual(viitegeneraattori_mock.uusi.call_count, 2)
+
+        # varmistetaan, että metodia tilisiirto on kutsuttu
+        #self.pankki_mock.tilisiirto.assert_called_with("pekka", 43, "12345", "33333-44455", 5)
+
+    def test_ostoksen_poisto(self):
+        kauppa = Kauppa(self.varasto_mock, self.pankki_mock, self.viitegeneraattori_mock)
+
+        # tehdään ostokset
+        kauppa.aloita_asiointi()
+        kauppa.lisaa_koriin(1)
+        kauppa.lisaa_koriin(2)
+        kauppa.poista_korista(1)
+        kauppa.tilimaksu("pekka", "12345")
+
+        # varmistetaan, että metodia tilisiirto on kutsuttu
+        self.pankki_mock.tilisiirto.assert_called_with("pekka", 42, "12345", "33333-44455", 10)
+    

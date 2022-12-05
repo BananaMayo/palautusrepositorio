@@ -19,7 +19,6 @@ class Kayttoliittyma:
             Komento.KUMOA: Kumoa(sovelluslogiikka)
         }
 
-
     def kaynnista(self):
         self._tulos_var = StringVar()
         self._tulos_var.set(self._sovelluslogiikka.tulos)
@@ -99,15 +98,12 @@ class Erotus:
 class Nollaus:
     def __init__(self, sovelluslogiikka: Sovelluslogiikka):
         self.sovelluslogiikka = sovelluslogiikka
-        self.edellinen = 0
 
     def suorita(self):
-        self.edellinen = self.sovelluslogiikka.tulos
         self.sovelluslogiikka.nollaa(self)
 
 class Kumoa:
     def __init__(self, sovelluslogiikka: Sovelluslogiikka):
-        #self.sovelluslogiikka = sovelluslogiikka
         pass
 
     def suorita(self):

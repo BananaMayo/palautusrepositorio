@@ -41,14 +41,12 @@ class Kayttoliittyma:
         self._nollaus_painike = ttk.Button(
             master=self._root,
             text="Nollaus",
-            state=constants.DISABLED,
             command=lambda: self._suorita_komento(Komento.NOLLAUS)
         )
 
         self._kumoa_painike = ttk.Button(
             master=self._root,
             text="Kumoa",
-            state=constants.DISABLED,
             command=lambda: self._suorita_komento(Komento.KUMOA)
         )
 
@@ -77,34 +75,44 @@ class Kayttoliittyma:
     
 class Summa:
     def __init__(self, sovelluslogiikka: Sovelluslogiikka, lue_syote):
-        self.syote = 0
+        self.viime_syote = 0
         self.sovelluslogiikka = sovelluslogiikka
         self.lue_syote = lue_syote
 
     def suorita(self):
-        self.syote = int(self.lue_syote())
-        self.sovelluslogiikka.plus(self.syote)
+        self.viime_syote = int(self.lue_syote())
+        self.sovelluslogiikka.plus(self.viime_syote, self)
+    
+    def kumoa(self):
+        self.sovelluslogiikka.miinus(self.viime_syote, 0)
+        self.viime_syote = 0
 
 class Erotus:
     def __init__(self, sovelluslogiikka: Sovelluslogiikka, lue_syote):
-        self.syote = 0
+        self.viime_syote = 0
         self.sovelluslogiikka = sovelluslogiikka
         self.lue_syote = lue_syote
 
     def suorita(self):
-        self.syote = int(self.lue_syote())
-        self.sovelluslogiikka.miinus(self.syote)
+        self.viime_syote = int(self.lue_syote())
+        self.sovelluslogiikka.miinus(self.viime_syote, self)
+    
+    def kumoa(self):
+        self.sovelluslogiikka.plus(self.viime_syote, 0)
+        self.viime_syote = 0
 
 class Nollaus:
     def __init__(self, sovelluslogiikka: Sovelluslogiikka):
         self.sovelluslogiikka = sovelluslogiikka
+        self.edellinen_arvo = 0
 
     def suorita(self):
+        self.edellinen_arvo = self.sovelluslogiikka.tulos
         self.sovelluslogiikka.nollaa(self)
 
 class Kumoa:
     def __init__(self, sovelluslogiikka: Sovelluslogiikka):
-        pass
+        self.sovelluslogiikka = sovelluslogiikka
 
     def suorita(self):
-        pass
+        self.sovelluslogiikka.kumoa()

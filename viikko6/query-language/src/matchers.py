@@ -1,22 +1,3 @@
-class QueryBuilder:
-    def __init__(self):
-        self.list_matchers = []
-
-    def plays_in(self, team):
-        self.list_matchers.append(PlaysIn(team))
-        return self
-
-    def has_at_least(self, value, attr):
-        self.list_matchers.append(HasAtLeast(value, attr))
-        return self
-
-    def has_fewer_than(self, value, attr):
-        self.list_matchers.append(HasFewerThan(value, attr))
-        return self
-
-    def build(self):
-        return And(*self.list_matchers)
-
 class And:
     def __init__(self, *matchers):
         self._matchers = matchers
@@ -79,3 +60,31 @@ class Or:
             if matcher.matches(player):
                 return True
         return False
+
+class QueryBuilder:
+    def __init__(self, list_matchers = [], or_list_matchers = []):
+        self.list_matchers = list_matchers
+        self.or_list_matchers = or_list_matchers
+
+    def plays_in(self, team):
+        new_list_for_matchers = self.list_matchers[:]
+        new_list_for_matchers.append(PlaysIn(team))
+        return QueryBuilder(new_list_for_matchers)
+
+    def has_at_least(self, value, attr):
+        new_list_for_matchers = self.list_matchers[:]
+        new_list_for_matchers.append(HasAtLeast(value, attr))
+        return QueryBuilder(new_list_for_matchers)
+
+    def has_fewer_than(self, value, attr):
+        new_list_for_matchers = self.list_matchers[:]
+        new_list_for_matchers.append(HasFewerThan(value, attr))
+        return QueryBuilder(new_list_for_matchers)
+
+    def oneOf(self, *matchers):
+        return QueryBuilder(or_list_matchers=matchers)
+
+    def build(self):
+        if len(self.or_list_matchers) > 0:
+            return Or(*self.or_list_matchers)
+        return And(*self.list_matchers)
